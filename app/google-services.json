@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "455388172991",
+    "project_id": "fir-intercorp",
+    "storage_bucket": "fir-intercorp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455388172991:android:27327602111a126c43ec0a",
+        "android_client_info": {
+          "package_name": "com.example.loginappintercorp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455388172991-rac57u0cm2ruskr2obaiephmb4ded9lt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCK_qYUkuTYpm6KgtYPHUBvxPGq8eys5vM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455388172991-rac57u0cm2ruskr2obaiephmb4ded9lt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
