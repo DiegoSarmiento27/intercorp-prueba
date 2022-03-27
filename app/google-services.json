@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "455388172991",
+    "firebase_url": "https://fir-intercorp-default-rtdb.firebaseio.com",
     "project_id": "fir-intercorp",
     "storage_bucket": "fir-intercorp.appspot.com"
   },
@@ -10,6 +11,43 @@
         "mobilesdk_app_id": "1:455388172991:android:27327602111a126c43ec0a",
         "android_client_info": {
           "package_name": "com.example.loginappintercorp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455388172991-hine0l2d62cm6668rbnubv2tf1vuv4hf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.loginappintercorp",
+            "certificate_hash": "7b30813e03214fb7f56c15aa720df2cc4244a500"
+          }
+        },
+        {
+          "client_id": "455388172991-rac57u0cm2ruskr2obaiephmb4ded9lt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCK_qYUkuTYpm6KgtYPHUBvxPGq8eys5vM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455388172991-rac57u0cm2ruskr2obaiephmb4ded9lt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455388172991:android:44f7e641de65e95043ec0a",
+        "android_client_info": {
+          "package_name": "com.retointercorp.loginappintercorp"
         }
       },
       "oauth_client": [

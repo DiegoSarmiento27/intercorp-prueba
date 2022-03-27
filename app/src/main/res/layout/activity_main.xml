@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.LoginActivity">
+    tools:context="com.retointercorp.loginappintercorp.view.LoginActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -61,6 +61,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/phoneEt"
                 android:hint=""
+                android:inputType="number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_baseline_create_24"/>

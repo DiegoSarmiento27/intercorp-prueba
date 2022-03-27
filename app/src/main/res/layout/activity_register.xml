@@ -74,9 +74,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="24dp"
         android:hint="@string/name"
-        app:boxStrokeColor="#052CB9"
+        app:boxStrokeColor="@color/principal"
         app:helperText="@string/helper_text"
-        app:helperTextTextColor="#052CB9"
+        app:helperTextTextColor="@color/principal"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -99,9 +99,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:hint="@string/lastname"
-        app:boxStrokeColor="#052CB9"
+        app:boxStrokeColor="@color/principal"
         app:helperText="@string/helper_text"
-        app:helperTextTextColor="#052CB9"
+        app:helperTextTextColor="@color/principal"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -125,9 +125,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:hint="@string/age"
-        app:boxStrokeColor="#052CB9"
+        app:boxStrokeColor="@color/principal"
         app:helperText="@string/helper_text"
-        app:helperTextTextColor="#052CB9"
+        app:helperTextTextColor="@color/principal"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -158,9 +158,9 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:hint="@string/date_birth"
-            app:boxStrokeColor="#052CB9"
+            app:boxStrokeColor="@color/principal"
             app:helperText="@string/helper_text"
-            app:helperTextTextColor="#052CB9"
+            app:helperTextTextColor="@color/principal"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -195,7 +195,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:id="@+id/registerBtn"
         android:text="@string/button_register"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         android:paddingLeft="60dp"
         android:paddingRight="60dp"
         android:layout_marginRight="16dp"

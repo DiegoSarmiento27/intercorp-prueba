@@ -40,4 +40,5 @@
     <string name="label_welcome">Bienvenido: </string>
     <string name="label_exit">Salir</string>
     <string name="label_date">Fecha</string>
+    <string name="login_cancel_much">Ups, Hubo un error, inténtelo de nuevo en unos minutos.</string>
 </resources>
