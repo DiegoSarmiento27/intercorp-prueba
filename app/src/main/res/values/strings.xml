@@ -36,4 +36,8 @@
     <string name="message_verify_otp">Verificando código</string>
     <string name="message_resend_otp">Reenviando código</string>
     <string name="message_phone_successful">Login Correcto</string>
+    <string name="message_send">Enviando código</string>
+    <string name="label_welcome">Bienvenido: </string>
+    <string name="label_exit">Salir</string>
+    <string name="label_date">Fecha</string>
 </resources>

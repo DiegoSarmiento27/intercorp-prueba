@@ -1,7 +1,6 @@
 package com.example.loginappintercorp.view;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.loginappintercorp.R;
 import com.example.loginappintercorp.model.Client;
@@ -60,25 +60,25 @@ public class RegisterActivity extends AppCompatActivity {
         nameEt = findViewById(R.id.nameEt);
         lastnameEt = findViewById(R.id.lastnameEt);
         ageEt = findViewById(R.id.ageEt);
-        dateEt = findViewById(R.id.datebirthEt);
+        dateEt = findViewById(R.id.dateBirthEt);
 
         nameTv = findViewById(R.id.nameTv);
         lastnameTv = findViewById(R.id.lastnameTv);
         ageTv = findViewById(R.id.ageTv);
-        dateTv = findViewById(R.id.datebirthTv);
-        btnImage = findViewById(R.id.sharepic);
+        dateTv = findViewById(R.id.dateBirthTv);
+        btnImage = findViewById(R.id.imagePicker);
     }
 
     private void initAction(){
         Button btn = findViewById(R.id.registerBtn);
-        Button btn_logout = findViewById(R.id.logoutBtn);
+        Button btnLogout = findViewById(R.id.logoutBtn);
         btn.setOnClickListener(v->{
             if (validateText()){
                 Client client = new Client(nameEt.getText().toString(), lastnameEt.getText().toString(), Integer.parseInt(ageEt.getText().toString()), dateEt.getText().toString());
                 clientViewModel.add(client).addOnSuccessListener(success -> Toast.makeText(this, getResources().getString(R.string.client_created), Toast.LENGTH_SHORT).show()).addOnFailureListener(error -> Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show());
             }
         });
-        btn_logout.setOnClickListener(v->{
+        btnLogout.setOnClickListener(v->{
             FirebaseAuth.getInstance().signOut();
             LoginManager.getInstance().logOut();
             finish();
@@ -93,9 +93,8 @@ public class RegisterActivity extends AppCompatActivity {
         int year = cal.get(Calendar.YEAR);
         int month  = cal.get(Calendar.MONTH);
         int day  = cal.get(Calendar.DAY_OF_MONTH);
-        int style = AlertDialog.THEME_HOLO_LIGHT;
 
-        datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
+        datePickerDialog = new DatePickerDialog(this,    R.style.ThemeOverlay_MaterialComponents_Dialog_Alert, dateSetListener, year, month, day);
         datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
     }
 
@@ -114,101 +113,63 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void initValidateTexts(){
         nameEt.addTextChangedListener(new TextWatcher() {
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if ((s.length() <= 0)) {
-                    modifyHelperTextError(nameTv);
-                } else {
-                    modifyHelperTextSuccess(nameTv);
-                }
+            public void onTextChanged(CharSequence name, int start, int before, int count) {
+                validate(name.length(), nameTv);
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (s.length() >= 0)  modifyHelperTextSuccess(nameTv);
+            public void beforeTextChanged(CharSequence nameBefore, int start, int count, int after) {
+                if (nameBefore.length() > 0)  modifyHelperTextSuccess(nameTv);
             }
 
-            public void afterTextChanged(Editable s) {
-                if ((s.length() <= 0)) {
-                    modifyHelperTextError(nameTv);
-                } else {
-                    modifyHelperTextSuccess(nameTv);
-                }
+            public void afterTextChanged(Editable nameAfter) {
+                if (nameAfter.length() > 0)  modifyHelperTextSuccess(nameTv);
             }
         });
 
         lastnameEt.addTextChangedListener(new TextWatcher() {
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if ((s.length() <= 0)) {
-                    modifyHelperTextError(lastnameTv);
-                } else {
-                    modifyHelperTextSuccess(lastnameTv);
-                }
+            public void onTextChanged(CharSequence lastname, int start, int before, int count) {
+                validate(lastname.length(), lastnameTv);
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (s.length() >= 0)  modifyHelperTextSuccess(lastnameTv);
+            public void beforeTextChanged(CharSequence lastnameBefore, int start, int count, int after) {
+                if (lastnameBefore.length() > 0)  modifyHelperTextSuccess(lastnameTv);
             }
 
-            public void afterTextChanged(Editable s) {
-                if ((s.length() <= 0)) {
-                    modifyHelperTextError(lastnameTv);
-                } else {
-                    modifyHelperTextSuccess(lastnameTv);
-                }
+            public void afterTextChanged(Editable lastnameAfter) {
+                if (lastnameAfter.length() > 0)  modifyHelperTextSuccess(lastnameTv);
             }
         });
 
         ageEt.addTextChangedListener(new TextWatcher() {
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if ((s.length() <= 0)) {
-                    modifyHelperTextError(ageTv);
-                } else {
-                    modifyHelperTextSuccess(ageTv);
-                }
+            public void onTextChanged(CharSequence age, int start, int before, int count) {
+                validate(age.length(), ageTv);
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (s.length() >= 0)  modifyHelperTextSuccess(ageTv);
+            public void beforeTextChanged(CharSequence ageBefore, int start, int count, int after) {
+                if (ageBefore.length() > 0)  modifyHelperTextSuccess(ageTv);
             }
 
-            public void afterTextChanged(Editable s) {
-                if ((s.length() <= 0)) {
-                    modifyHelperTextError(ageTv);
-                } else {
-                    modifyHelperTextSuccess(ageTv);
-                }
-            }
-        });
-
-        dateEt.addTextChangedListener(new TextWatcher() {
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if ((s.length() <= 0)) {
-                    modifyHelperTextError(dateTv);
-                } else {
-                    modifyHelperTextSuccess(dateTv);
-                }
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (s.length() >= 0)  modifyHelperTextSuccess(dateTv);
-            }
-
-            public void afterTextChanged(Editable s) {
-                if ((s.length() <= 0)) {
-                    modifyHelperTextError(dateTv);
-                } else {
-                    modifyHelperTextSuccess(dateTv);
-                }
+            public void afterTextChanged(Editable ageAfter) {
+                if (ageAfter.length() > 0)  modifyHelperTextSuccess(ageTv);
             }
         });
     }
 
+    private void validate(int num, TextInputLayout input){
+        if (num <= 0) {
+            modifyHelperTextError(input);
+        } else {
+            modifyHelperTextSuccess(input);
+        }
+    }
+
     private void modifyHelperTextError(@NonNull TextInputLayout textInputLayout){
-        textInputLayout.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.red)));
+        textInputLayout.setHelperTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.red)));
         textInputLayout.setHelperText(getResources().getString(R.string.invalid_text));
     }
 
     private void modifyHelperTextSuccess(@NonNull TextInputLayout textInputLayout){
-        textInputLayout.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.green)));
+        textInputLayout.setHelperTextColor(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.green)));
         textInputLayout.setHelperText(getResources().getString(R.string.correct_text));
     }
 

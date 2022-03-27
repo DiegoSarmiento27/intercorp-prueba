@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -20,7 +19,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.firebase.FirebaseException;
@@ -37,7 +35,6 @@ import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private CallbackManager mCallbackManager;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private LoginButton loginButton;
@@ -48,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
     private PhoneAuthProvider.ForceResendingToken mForceResendingToken;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private String mVerificationId;
-    private ProgressDialog pd;
     private EditText otpEt;
     private LinearLayout layoutOtp;
     private TextView lblOtp;
@@ -61,12 +57,6 @@ public class LoginActivity extends AppCompatActivity {
         initFirebase();
         initFacebook();
         initPhoneAuth();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void handleFacebookToken(AccessToken token){
@@ -93,9 +83,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initFacebook(){
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        loginButton.setReadPermissions(getResources().getString(R.string.email_permission_facebook), getResources().getString(R.string.public_permission_facebook));
-        mCallbackManager = CallbackManager.Factory.create();
+        loginButton.setPermissions(getResources().getString(R.string.email_permission_facebook), getResources().getString(R.string.public_permission_facebook));
+        CallbackManager mCallbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -153,10 +142,6 @@ public class LoginActivity extends AppCompatActivity {
         layoutOtp = findViewById(R.id.layoutOtp);
         otpEt = findViewById(R.id.otpEt);
 
-        pd = new ProgressDialog(this);
-        pd.setTitle(getResources().getString(R.string.message_wait));
-        pd.setCanceledOnTouchOutside(false);
-
         mCallbacks  = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
@@ -165,7 +150,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
-                pd.dismiss();
                 Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_cancel), Toast.LENGTH_SHORT).show();
             }
 
@@ -174,7 +158,6 @@ public class LoginActivity extends AppCompatActivity {
                 super.onCodeSent(s, forceResendingToken);
                 mVerificationId = s;
                 mForceResendingToken = forceResendingToken;
-                pd.dismiss();
                 Toast.makeText(LoginActivity.this, getResources().getString(R.string.message_code_success), Toast.LENGTH_SHORT).show();
             }
         };
@@ -182,10 +165,11 @@ public class LoginActivity extends AppCompatActivity {
         nextStepBtn.setOnClickListener(view -> {
             String phone = countryEt.getText().toString() + phoneEt.getText().toString();
             if(TextUtils.isEmpty(countryEt.getText().toString()) || TextUtils.isEmpty(phoneEt.getText().toString())){
-                lblOtp.setText(getResources().getString(R.string.label_info_otp)+" "+phone);
-                layoutOtp.setVisibility(View.VISIBLE);
                 Toast.makeText(LoginActivity.this, getResources().getString(R.string.message_alert_phone), Toast.LENGTH_SHORT).show();
             }else{
+                Toast.makeText(LoginActivity.this, getResources().getString(R.string.message_send), Toast.LENGTH_LONG).show();
+                lblOtp.setText(getResources().getString(R.string.label_info_otp)+" "+phone);
+                layoutOtp.setVisibility(View.VISIBLE);
                 startPhoneVerification(phone);
             }
         });
@@ -211,8 +195,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startPhoneVerification(String phone){
-        pd.setMessage(getResources().getString(R.string.message_verify_otp));
-        pd.show();
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mFirebaseAuth)
                 .setPhoneNumber(phone)
                 .setTimeout(60L, TimeUnit.SECONDS)
@@ -223,8 +205,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void resendCode(String phone, PhoneAuthProvider.ForceResendingToken token){
-        pd.setMessage(getResources().getString(R.string.message_resend_otp));
-        pd.show();
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mFirebaseAuth)
                 .setPhoneNumber(phone)
                 .setTimeout(60L, TimeUnit.SECONDS)
@@ -236,8 +216,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void verifyCode(String mVerificationId, String code){
-        pd.setMessage(getResources().getString(R.string.message_verify_otp));
-        pd.show();
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
         signInWithPhoneCredential(credential);
     }
@@ -245,7 +223,6 @@ public class LoginActivity extends AppCompatActivity {
     private void signInWithPhoneCredential(PhoneAuthCredential credential) {
         mFirebaseAuth.signInWithCredential(credential)
                 .addOnSuccessListener(authResult -> {
-                    pd.dismiss();
                     String phone = Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getPhoneNumber();
                     Toast.makeText(LoginActivity.this, getResources().getString(R.string.message_phone_successful)+" "+ phone, Toast.LENGTH_SHORT).show();
                     layoutOtp.setVisibility(View.GONE);
@@ -253,10 +230,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                     startActivity(intent);
                 })
-                .addOnFailureListener(e -> {
-                    pd.dismiss();
-                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_cancel), Toast.LENGTH_SHORT).show();
-                });
+                .addOnFailureListener(e -> Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_cancel), Toast.LENGTH_SHORT).show());
     }
 
     private void resetText(){
